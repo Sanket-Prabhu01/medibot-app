@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medibot: Your Personal Healthcare Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  </head>
+
+  <style>
+    nav {
+        background: linear-gradient(90deg, rgba(70, 130, 180, 1) 0%, rgba(70, 130, 180, 0.7) 100%);
+        border-bottom: 3px solid #1e2a47;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar-brand {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        margin-left: 32px; /* Adjust this to move 'Medibot' right */
+        transition: color 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+        color: #ffcc00; /* Bright yellow on hover */
+    }
+
+    /* Navbar Link Styling */
+    .nav-item .nav-link {
+        color: white !important;
+        font-size: 18px;
+        font-weight: 500;
+        padding: 10px 15px;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .nav-item .nav-link:hover, .nav-item .nav-link.active {
+        color: #ffcc00 !important;
+        transform: scale(1.1); /* Subtle zoom effect */
+    }
+
+    /* Search Bar Styling */
+    .form-control {
+        border-radius: 20px;
+        padding: 10px 20px;
+        transition: width 0.3s ease, padding 0.3s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #ffcc00;
+    }
+
+    .btn-outline-success {
+        border-radius: 20px;
+        padding: 10px 20px;
+        background-color: transparent;
+        color: white;
+        border-color: #ffcc00;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-outline-success:hover {
+        background-color: #ffcc00;
+        color: black;
+        border-color: #ffcc00;
+    }
+
+    /* Logo Styling */
+    .logo {
+        padding: 10px;
+    }
+
+    .logo .myimg {
+        height: 40px;
+        width: auto;
+    }
+
+    /* Navbar Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .navbar-brand {
+            font-size: 20px;
+        }
+
+        .nav-item .nav-link {
+            font-size: 16px;
+        }
+
+        .form-control {
+            width: 70%;
+            padding: 8px 10px;
+        }
+    }
+
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            color: black;
+            margin-top: 0;
+            margin-left: 2px;
+        }
+
+        .myimg {
+            width: 50px;
+            height: 50px;
+            border: 2px solid black;
+            border-radius: 25px;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styling */
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Container Styling */
+        .container {
+            background-color: #2f3542;
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            color: #f5f6fa;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 12px;
+            border: 1px solid #a29bfe;
+            background-color: #dfe6e9;
+            transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #6c5ce7;
+        }
+
+        .form-control::placeholder {
+            color: #b2bec3;
+        }
+
+        /* Speech Recognition Button Styling */
+        #startSpeechRecognition {
+            background-color: #6c5ce7;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        #startSpeechRecognition:hover {
+            background-color: #a29bfe;
+            transform: scale(1.05);
+        }
+
+        /* Prediction Button Styling */
+        button[type="submit"] {
+            background-color: #e17055;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            width: 100%;
+            border-radius: 15px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #d63031;
+            transform: scale(1.05);
+        }
+
+        /* Transcription Box Styling */
+        #transcription {
+            background-color: #fff;
+            color: #2d3436;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            min-height: 50px;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Message Styling */
+        p {
+            color: #e74c3c;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <!-- Logo at the top-left corner -->
+            <div class="logo">
+                <img class="myimg" src="{{ url_for('static', filename='img.png') }}" alt="Logo">
+            </div>
+
+            <a class="navbar-brand" href="#">MediBot</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/developer">About Developers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+ <!-- Main Form -->
+ <h1>MediBot</h1>
+ <div class="container my-4 mt-4">
+     <form action="/predict" method="post">
+         <div class="form-group">
+             <label for="symptoms">Tell us about your symptoms:</label>
+             <input type="text" class="form-control" id="symptoms" name="symptoms" placeholder="Type symptoms such as itching, fatigue, headache, etc." required>
+         </div>
+         
+         <!-- Speech Recognition Button -->
+         <button type="button" id="startSpeechRecognition" class="btn btn-primary" style="margin-left:3px;">
+             Start Speech Recognition
+         </button>
+
+         <!-- Display Transcribed Text -->
+         <div name="mysysms" id="transcription"></div>
+
+         {% if message %}
+             <p>{{ message }}</p>
+         {% endif %}
+         
+         <!-- Submit Button -->
+         <button type="submit" class="btn btn-danger btn-lg" style="margin-top: 20px;">Predict</button>
+     </form>
+ </div>
+
+
+
+
+
+
+ {% if predicted_disease %}
+
+<!-- Results -->
+<h1 class="text-center my-4 mt-4 text-primary font-weight-bold">Our AI Assistant Results</h1>
+<div class="container">
+
+    <!-- Button container with premium design -->
+    <div class="result-container text-center">
+        <!-- Buttons to toggle display with stylish design, relevant icons, and hover effects -->
+        <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#diseaseModal">
+            <i class="bi bi-heart-pulse" style="font-size: 25px;"></i><br> Disease
+        </button>
+        <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#descriptionModal">
+            <i class="bi bi-file-earmark-text" style="font-size: 25px;"></i><br> Description
+        </button>
+        <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#precautionModal">
+            <i class="bi bi-shield-lock" style="font-size: 25px;"></i><br> Precaution
+        </button>
+        <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#medicationsModal">
+            <i class="bi bi-capsule" style="font-size: 25px;"></i><br> Medications
+        </button>
+        <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#workoutsModal">
+            <i class="bi bi-dumbbell" style="font-size: 25px;"></i><br> Workouts
+        </button>
+        <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#dietsModal">
+            <i class="bi bi-egg" style="font-size: 25px;"></i><br> Diets
+        </button>
+    </div>
+
+</div>
+
+<!-- Premium button styles -->
+<style>
+    .result-container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .toggle-button {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        padding: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 15px;
+        border: none;
+        margin: 10px;
+        width: 150px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Hover effect */
+    .toggle-button:hover {
+        background-color: #2980b9;
+        transform: translateY(-5px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .toggle-button i {
+        margin-bottom: 10px;
+        color: #fff;
+    }
+
+    .toggle-button:hover i {
+        color: #fff;
+    }
+
+    /* Modal window customization */
+    .modal-content {
+        background-color: #34495e;
+        color: #ecf0f1;
+        border-radius: 20px;
+    }
+
+    .modal-header {
+        border-bottom: none;
+        font-size: 24px;
+        font-weight: bold;
+        color: #2ecc71;
+    }
+
+    .modal-body {
+        font-size: 18px;
+        padding: 20px;
+    }
+
+    /* Modal button */
+    .modal-footer .btn {
+        background-color: #e74c3c;
+        color: white;
+        font-weight: bold;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .modal-footer .btn:hover {
+        background-color: #c0392b;
+        transform: scale(1.05);
+    }
+</style>
+
+{% endif %}
+
+ 
+
+<!-- Disease Modal -->
+<div class="modal fade" id="diseaseModal" tabindex="-1" aria-labelledby="diseaseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1e2a47; color:white; border-radius: 15px 15px 0 0;">
+                <h5 class="modal-title" id="diseaseModalLabel" style="font-weight: bold; font-size: 24px;">Predicted Disease</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border-radius: 50%; background-color: #ecf0f1; color: #2c3e50;"></button>
+            </div>
+            <div class="modal-body" style="background-color: #34495e; color: white; border-radius: 0 0 15px 15px; padding: 30px;">
+                <p style="font-size: 18px; line-height: 1.5; font-family: 'Roboto', sans-serif;">{{ predicted_disease }}</p>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" style="border-radius: 30px; padding: 10px 20px; font-size: 16px; font-weight: bold; background-color: #27ae60; border: none;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Modal -->
+<style>
+    .modal-dialog {
+        max-width: 600px; /* Increased width */
+    }
+
+    .modal-header {
+        background-color: #1e2a47;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        font-size: 26px;
+        color: #fff;
+        letter-spacing: 1px;
+    }
+
+    .modal-body {
+        background-color: #34495e;
+        color: white;
+        padding: 30px;
+        border-radius: 0 0 15px 15px;
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .btn-close {
+        border-radius: 50%;
+        background-color: #ecf0f1;
+        color: #2c3e50;
+        font-size: 18px;
+    }
+
+    .btn-close:hover {
+        background-color: #bdc3c7;
+        color: #34495e;
+    }
+
+    .btn-success {
+        background-color: #27ae60;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #2ecc71;
+    }
+</style>
+
+
+
+ <!-- Description Modal -->
+<div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1e2a47; color:white; border-radius: 15px 15px 0 0;">
+                <h5 class="modal-title" id="descriptionModalLabel" style="font-weight: bold; font-size: 24px;">Disease Description</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border-radius: 50%; background-color: #ecf0f1; color: #2c3e50;"></button>
+            </div>
+            <div class="modal-body" style="background-color: #34495e; color: white; border-radius: 0 0 15px 15px; padding: 30px;">
+                <p style="font-size: 18px; line-height: 1.5; font-family: 'Roboto', sans-serif;">{{ dis_des }}</p>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" style="border-radius: 30px; padding: 10px 20px; font-size: 16px; font-weight: bold; background-color: #27ae60; border: none;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Description Modal -->
+<style>
+    .modal-dialog {
+        max-width: 600px; /* Increased width */
+    }
+
+    .modal-header {
+        background-color: #1e2a47;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        font-size: 26px;
+        color: #fff;
+        letter-spacing: 1px;
+    }
+
+    .modal-body {
+        background-color: #34495e;
+        color: white;
+        padding: 30px;
+        border-radius: 0 0 15px 15px;
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .btn-close {
+        border-radius: 50%;
+        background-color: #ecf0f1;
+        color: #2c3e50;
+        font-size: 18px;
+    }
+
+    .btn-close:hover {
+        background-color: #bdc3c7;
+        color: #34495e;
+    }
+
+    .btn-success {
+        background-color: #27ae60;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #2ecc71;
+    }
+</style>
+
+<!-- Precaution Modal -->
+<div class="modal fade" id="precautionModal" tabindex="-1" aria-labelledby="precautionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1e2a47; color:white; border-radius: 15px 15px 0 0;">
+                <h5 class="modal-title" id="precautionModalLabel" style="font-weight: bold; font-size: 24px;">Precautions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border-radius: 50%; background-color: #ecf0f1; color: #2c3e50;"></button>
+            </div>
+            <div class="modal-body" style="background-color: #34495e; color: white; border-radius: 0 0 15px 15px; padding: 30px;">
+                <ul style="font-size: 18px; line-height: 1.6; font-family: 'Roboto', sans-serif;">
+                    {% for precaution in my_precautions %}
+                        <li style="margin-bottom: 10px; list-style-type: disc; padding-left: 20px;">{{ precaution }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" style="border-radius: 30px; padding: 10px 20px; font-size: 16px; font-weight: bold; background-color: #27ae60; border: none;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Precaution Modal -->
+<style>
+    .modal-dialog {
+        max-width: 600px; /* Increased width */
+    }
+
+    .modal-header {
+        background-color: #1e2a47;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        font-size: 26px;
+        color: #fff;
+        letter-spacing: 1px;
+    }
+
+    .modal-body {
+        background-color: #34495e;
+        color: white;
+        padding: 30px;
+        border-radius: 0 0 15px 15px;
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .btn-close {
+        border-radius: 50%;
+        background-color: #ecf0f1;
+        color: #2c3e50;
+        font-size: 18px;
+    }
+
+    .btn-close:hover {
+        background-color: #bdc3c7;
+        color: #34495e;
+    }
+
+    .btn-success {
+        background-color: #27ae60;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #2ecc71;
+    }
+
+    .modal-body ul {
+        padding-left: 20px;
+    }
+
+    .modal-body li {
+        margin-bottom: 10px;
+        font-size: 18px;
+        line-height: 1.6;
+        list-style-type: disc;
+        padding-left: 20px;
+    }
+</style>
+
+
+
+
+
+   <!-- Medications Modal -->
+<div class="modal fade" id="medicationsModal" tabindex="-1" aria-labelledby="medicationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2d3436; color:white; border-radius: 15px 15px 0 0;">
+                <h5 class="modal-title" id="medicationsModalLabel" style="font-weight: bold; font-size: 24px;">Medications</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border-radius: 50%; background-color: #ecf0f1; color: #2c3e50;"></button>
+            </div>
+            <div class="modal-body" style="background-color: #34495e; color: white; border-radius: 0 0 15px 15px; padding: 30px;">
+                <ul style="font-size: 18px; line-height: 1.6; font-family: 'Roboto', sans-serif;">
+                    {% for med in medications %}
+                        <li style="margin-bottom: 10px; list-style-type: disc; padding-left: 20px;">{{ med }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" style="border-radius: 30px; padding: 10px 20px; font-size: 16px; font-weight: bold; background-color: #27ae60; border: none;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Medications Modal -->
+<style>
+    .modal-dialog {
+        max-width: 600px; /* Increased width for better visibility */
+    }
+
+    .modal-header {
+        background-color: #2d3436;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        font-size: 26px;
+        color: #fff;
+        letter-spacing: 1px;
+    }
+
+    .modal-body {
+        background-color: #34495e;
+        color: white;
+        padding: 30px;
+        border-radius: 0 0 15px 15px;
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .btn-close {
+        border-radius: 50%;
+        background-color: #ecf0f1;
+        color: #2c3e50;
+        font-size: 18px;
+    }
+
+    .btn-close:hover {
+        background-color: #bdc3c7;
+        color: #34495e;
+    }
+
+    .btn-success {
+        background-color: #27ae60;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #2ecc71;
+    }
+
+    .modal-body ul {
+        padding-left: 20px;
+    }
+
+    .modal-body li {
+        margin-bottom: 10px;
+        font-size: 18px;
+        line-height: 1.6;
+        list-style-type: disc;
+        padding-left: 20px;
+    }
+</style>
+
+<!-- Workouts Modal -->
+<div class="modal fade" id="workoutsModal" tabindex="-1" aria-labelledby="workoutsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2c3e50; color:white; border-radius: 15px 15px 0 0;">
+                <h5 class="modal-title" id="workoutsModalLabel" style="font-weight: bold; font-size: 24px;">Workouts</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border-radius: 50%; background-color: #ecf0f1; color: #2c3e50;"></button>
+            </div>
+            <div class="modal-body" style="background-color: #34495e; color: white; border-radius: 0 0 15px 15px; padding: 30px;">
+                <ul style="font-size: 18px; line-height: 1.6; font-family: 'Roboto', sans-serif;">
+                    {% for i in workout %}
+                        <li style="margin-bottom: 10px; list-style-type: disc; padding-left: 20px;">{{ i }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" style="border-radius: 30px; padding: 10px 20px; font-size: 16px; font-weight: bold; background-color: #27ae60; border: none;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Workouts Modal -->
+<style>
+    .modal-dialog {
+        max-width: 600px; /* Increased width for better visibility */
+    }
+
+    .modal-header {
+        background-color: #2c3e50;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        font-size: 26px;
+        color: #fff;
+        letter-spacing: 1px;
+    }
+
+    .modal-body {
+        background-color: #34495e;
+        color: white;
+        padding: 30px;
+        border-radius: 0 0 15px 15px;
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .btn-close {
+        border-radius: 50%;
+        background-color: #ecf0f1;
+        color: #2c3e50;
+        font-size: 18px;
+    }
+
+    .btn-close:hover {
+        background-color: #bdc3c7;
+        color: #34495e;
+    }
+
+    .btn-success {
+        background-color: #27ae60;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #2ecc71;
+    }
+
+    .modal-body ul {
+        padding-left: 20px;
+    }
+
+    .modal-body li {
+        margin-bottom: 10px;
+        font-size: 18px;
+        line-height: 1.6;
+        list-style-type: disc;
+        padding-left: 20px;
+    }
+</style>
+
+<!-- Diets Modal -->
+<div class="modal fade" id="dietsModal" tabindex="-1" aria-labelledby="dietsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #16a085; color:white; border-radius: 15px 15px 0 0;">
+                <h5 class="modal-title" id="dietsModalLabel" style="font-weight: bold; font-size: 24px;">Recommended Diets</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="border-radius: 50%; background-color: #ecf0f1; color: #16a085;"></button>
+            </div>
+            <div class="modal-body" style="background-color: #1abc9c; color: white; border-radius: 0 0 15px 15px; padding: 30px;">
+                <ul style="font-size: 18px; line-height: 1.6; font-family: 'Roboto', sans-serif;">
+                    {% for i in my_diet %}
+                        <li style="margin-bottom: 10px; list-style-type: disc; padding-left: 20px;">{{ i }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" style="border-radius: 30px; padding: 10px 20px; font-size: 16px; font-weight: bold; background-color: #27ae60; border: none;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Diets Modal -->
+<style>
+    .modal-dialog {
+        max-width: 600px; /* Increased width for better visibility */
+    }
+
+    .modal-header {
+        background-color: #16a085;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .modal-title {
+        font-weight: 600;
+        font-size: 26px;
+        color: #fff;
+        letter-spacing: 1px;
+    }
+
+    .modal-body {
+        background-color: #1abc9c;
+        color: white;
+        padding: 30px;
+        border-radius: 0 0 15px 15px;
+        font-size: 18px;
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .btn-close {
+        border-radius: 50%;
+        background-color: #ecf0f1;
+        color: #16a085;
+        font-size: 18px;
+    }
+
+    .btn-close:hover {
+        background-color: #bdc3c7;
+        color: #1abc9c;
+    }
+
+    .btn-success {
+        background-color: #27ae60;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #2ecc71;
+    }
+
+    .modal-body ul {
+        padding-left: 20px;
+    }
+
+    .modal-body li {
+        margin-bottom: 10px;
+        font-size: 18px;
+        line-height: 1.6;
+        list-style-type: disc;
+        padding-left: 20px;
+    }
+</style>
+
+
+<script>
+    const startSpeechRecognitionButton = document.getElementById('startSpeechRecognition');
+    const transcriptionDiv = document.getElementById('transcription');
+
+    // Check if the browser supports speech recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        alert("Sorry, your browser does not support Speech Recognition.");
+        startSpeechRecognitionButton.disabled = true;  // Disable the button if not supported
+    } else {
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US'; // Set the language for recognition
+        recognition.continuous = true; // Continuously listen for speech input
+        recognition.interimResults = true; // Display interim results while speaking
+
+        startSpeechRecognitionButton.addEventListener('click', startSpeechRecognition);
+
+        function startSpeechRecognition() {
+            transcriptionDiv.textContent = "Listening..."; // Display feedback to user
+            startSpeechRecognitionButton.disabled = true; // Disable button while recognizing
+
+            recognition.onresult = function (event) {
+                const result = event.results[event.results.length - 1][0].transcript; // Get the most recent transcript
+                transcriptionDiv.textContent = result; // Update the transcription
+            };
+
+            recognition.onerror = function (event) {
+                transcriptionDiv.textContent = "Error: " + event.error; // Handle errors
+                startSpeechRecognitionButton.disabled = false; // Re-enable the button if error occurs
+            };
+
+            recognition.onend = function () {
+                console.log('Speech recognition ended.');
+                startSpeechRecognitionButton.disabled = false; // Re-enable button when recognition ends
+            };
+
+            recognition.start();
+        }
+    }
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+
+</html>
